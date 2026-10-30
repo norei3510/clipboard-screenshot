@@ -1,5 +1,11 @@
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
+$tokens = $null
+$parseErrors = $null
+Get-ChildItem -LiteralPath $root -Filter *.ps1 | ForEach-Object {
+    [Management.Automation.Language.Parser]::ParseFile($_.FullName, [ref]$tokens, [ref]$parseErrors) | Out-Null
+    if ($parseErrors) { throw ($parseErrors | Out-String) }
+}
 & (Join-Path $root 'ClipboardCapture.ps1') -Test
 $framework = if ([Environment]::Is64BitOperatingSystem) { 'Framework64' } else { 'Framework' }
 $compiler = Join-Path $env:WINDIR ('Microsoft.NET\' + $framework + '\v4.0.30319\csc.exe')
