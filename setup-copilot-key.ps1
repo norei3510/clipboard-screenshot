@@ -6,6 +6,8 @@ if (-not (Test-Path -LiteralPath $ahk)) {
 $script = Join-Path $PSScriptRoot 'copilot-hotkey.ahk'
 $launcher = Join-Path $PSScriptRoot 'スクショ起動.vbs'
 if (-not (Test-Path -LiteralPath $launcher)) { throw 'スクショ起動.vbs が見つかりません。' }
+# Prebuild so the first key press also launches immediately.
+& (Join-Path $PSScriptRoot 'ClipboardCapture.ps1') -BuildOnly
 $check = Start-Process -FilePath $ahk -ArgumentList @('/validate', ('"' + $script + '"')) -Wait -PassThru -WindowStyle Hidden
 if ($check.ExitCode -ne 0) { throw 'AutoHotkey のスクリプトを検証できませんでした。' }
 $startup = [Environment]::GetFolderPath('Startup')
