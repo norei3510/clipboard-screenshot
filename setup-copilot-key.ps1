@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $ahk = Join-Path $env:ProgramFiles 'AutoHotkey\v2\AutoHotkey64.exe'
 if (-not (Test-Path -LiteralPath $ahk)) {
     throw 'AutoHotkey v2 が見つかりません。AutoHotkey v2 をインストールしてください。'
